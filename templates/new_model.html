@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>New Model Prediction (A2)</title>
+</head>
+<body>
+    <h1>Predict Car Price with New Model (A2)</h1>
+    <form id="predictFormNew">
+        <input type="text" id="name" placeholder="Car Name (Encoded)">
+        <input type="number" id="engine" placeholder="Engine Size">
+        <input type="number" id="mileage" placeholder="Mileage">
+        <button type="submit">Predict</button>
+    </form>
+    <p>Predicted Price: <span id="resultNew"></span></p>
+
+    <script>
+        document.getElementById("predictFormNew").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let features = [
+                parseFloat(document.getElementById("name").value),
+                parseFloat(document.getElementById("engine").value),
+                parseFloat(document.getElementById("mileage").value)
+            ];
+            fetch("/predict_new", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({"features": features})
+            })
+            .then(response => response.json())
+            .then(data => document.getElementById("resultNew").innerText = data.predicted_price)
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
